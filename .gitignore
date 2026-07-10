@@ -97,3 +97,18 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+.ipynb_checkpoints
+
+REALTIME_TRAINING.md
+
+run_training.sh
+train_realtime.sh
+
+Open_Unmix_Pytorch.ipynb
+
+export/*
+!export/export_umx_live.py
+models
+logs
+

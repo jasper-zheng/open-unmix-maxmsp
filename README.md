@@ -1,3 +1,65 @@
+# Open-Unmix-MaxMSP
+
+[![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-shuoyang--zheng%2FOpen--Unmix--Unidirectional-yellow)](https://huggingface.co/shuoyang-zheng/Open-Unmix-Unidirectional)
+
+
+**Streaming the Open-Unmix source separation model in MaxMSP**  
+Exports a pre-trained causal / unidirectional `umx` model to the [`neural.live~`](https://github.com/jasper-zheng/neural_tilde) for source separation in real time.  
+(Apple Silicon only)
+
+
+
+## Pretrained models
+
+Pre-trained models are available in [Hugging Face](https://huggingface.co/shuoyang-zheng/Open-Unmix-Unidirectional).
+
+After downloading a model, please copy the `.pte` and `.json` into a folder on Max's search path (Options -> File Preferences -> add the folder).
+
+## I/O and controls in MaxMSP
+
+- **Inputs (2 signal inlets):** Stereo audio (L/R)
+- **Outputs (8 signal outlets):** Vocals L/R, drums L/R, bass L/R, other L/R
+- **mask_power (attribute):** Default 1.0, range 0-4; >1 sharper (cleaner, more artifacts), <1 softer (more residuals in background)
+
+
+
+## Export your own models
+
+If you are exporting your own pretrained model, please follow the steps below. 
+
+### 1. Setup
+
+We use the [`uv`](https://github.com/astral-sh/uv) tool to manage venv. After you have installed uv, please run the following commands:
+
+```bash
+# create and activate the venv
+uv venv --python 3.11 .venv
+source .venv/bin/activate
+
+# install packages
+uv pip install torch==2.12.0 torchaudio==2.11.0 -e .
+uv pip install neural_tilde==0.0.3 cached_conv executorch mlx soundfile librosa
+```
+
+### 2. Export
+
+```bash
+.venv/bin/python export/export_umx_live.py \
+    --model models/umx-realtime --out-dir export/artifacts \
+    --buffer-sizes 2048 --delegates mlx
+```
+
+This writes `umx_live_mlx_2048.pte` (+ metadata `.json`) into `export/artifacts/`.
+
+
+
+## Addition to the original Open-Unmix repo
+
+The original `model.Separator` is non-causal. The additional `openunmix/export_stream.py` adds a windowed-DFT `Conv1d` STFT fed by [cached_conv](https://github.com/acids-ircam/cached_conv).
+
+
+----------**The Original Open-Unmix README.md:**------------
+
 #  _Open-Unmix_ for PyTorch
 
 [![status](https://joss.theoj.org/papers/571753bc54c5d6dd36382c3d801de41d/status.svg)](https://joss.theoj.org/papers/571753bc54c5d6dd36382c3d801de41d) 

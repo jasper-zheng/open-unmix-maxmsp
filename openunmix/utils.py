@@ -151,6 +151,7 @@ def load_target_models(targets, model_str_or_path="umxl", device="cpu", pretrain
                 nb_bins=results["args"]["nfft"] // 2 + 1,
                 nb_channels=results["args"]["nb_channels"],
                 hidden_size=results["args"]["hidden_size"],
+                unidirectional=results["args"].get("unidirectional", False),
                 max_bin=state["input_mean"].shape[0],
             )
 

@@ -22,7 +22,7 @@ def load_info(path: str) -> dict:
 
     """
     # get length of file in samples
-    if torchaudio.get_audio_backend() == "sox":
+    if hasattr(torchaudio, "get_audio_backend") and torchaudio.get_audio_backend() == "sox":
         raise RuntimeError("Deprecated backend is not supported")
 
     info = {}
@@ -926,10 +926,12 @@ if __name__ == "__main__":
 
     args, _ = parser.parse_known_args()
 
-    torchaudio.set_audio_backend(args.audio_backend)
+    if hasattr(torchaudio, "set_audio_backend"):
+        torchaudio.set_audio_backend(args.audio_backend)
 
     train_dataset, valid_dataset, args = load_datasets(parser, args)
-    print("Audio Backend: ", torchaudio.get_audio_backend())
+    if hasattr(torchaudio, "get_audio_backend"):
+        print("Audio Backend: ", torchaudio.get_audio_backend())
 
     # Iterate over training dataset and compute statistics
     total_training_duration = 0

@@ -116,7 +116,11 @@ def separate():
     )
     args = parser.parse_args()
 
-    if args.audio_backend != "stempeg" and args.audio_backend is not None:
+    if (
+        args.audio_backend != "stempeg"
+        and args.audio_backend is not None
+        and hasattr(torchaudio, "set_audio_backend")
+    ):
         torchaudio.set_audio_backend(args.audio_backend)
 
     use_cuda = not args.no_cuda and torch.cuda.is_available()

@@ -31,8 +31,8 @@ classifiers = [
 ]
 dependencies = [
   "numpy",
-  "torchaudio>=0.9.0",
-  "torch>=1.9.0",
+  "torchaudio>=2.11.0",
+  "torch>=2.12.0",
   "tqdm",
 ]
 
